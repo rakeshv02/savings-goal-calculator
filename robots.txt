@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://savings-goal-calculator.tabutility.com/sitemap.xml
