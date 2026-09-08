@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
   <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Savings Goal Calculator – How Much Should I Save Each Month? | Tabutility</title>
@@ -40,8 +38,6 @@
 nav .brand{color:#fff}
 nav a:hover{color:#818cf8}
 input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
-/* AdSense not yet approved: hide all ad frames (container min-height still reserves space). Remove these two lines after approval. */
-ins.adsbygoogle,.ad-banner iframe,.ad-slot iframe,.ad-container iframe{visibility:hidden!important}
 </style>
 <link rel="dns-prefetch" href="//unpkg.com">
 <script type="application/ld+json">
@@ -65,13 +61,13 @@ ins.adsbygoogle,.ad-banner iframe,.ad-slot iframe,.ad-container iframe{visibilit
     }
     }
     </script>
-  <meta name="robots" content="noindex, follow">
+    <meta name="robots" content="noindex, follow">
 </head>
 <body>
   <nav class="site-nav"><span class="nav-brand">⚡ Tabutility</span><a href="https://tabutility.com">← All Tools</a></nav>
-  <div id="ad-top"><ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="ca-pub-7039091592734005" data-ad-slot="auto" data-ad-format="horizontal" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+  <div id="ad-top"></div>
   <div id="root"></div>
-  <div id="ad-bottom"><ins class="adsbygoogle" style="display:block;min-height:250px" data-ad-client="ca-pub-7039091592734005" data-ad-slot="auto" data-ad-format="rectangle" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+  <div id="ad-bottom"></div>
   <script type="text/babel">
     //<![CDATA[
     const { useState } = React;
@@ -279,27 +275,6 @@ ins.adsbygoogle,.ad-banner iframe,.ad-slot iframe,.ad-container iframe{visibilit
     <span style="font-size:11px;color:#475569;margin-left:12px">Free to use — attribution appreciated but not required</span>
   </div>
 </div>
-<script>
-(function(){
-  var ins=document.querySelectorAll('.adsbygoogle:not([data-lazy-done])');
-  var belowFold=Array.from(ins).slice(1);
-  if(!belowFold.length)return;
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries,obs){
-      entries.forEach(function(e){
-        if(e.isIntersecting){
-          (adsbygoogle=window.adsbygoogle||[]).push({});
-          e.target.setAttribute('data-lazy-done','1');
-          obs.unobserve(e.target);
-        }
-      });
-    },{rootMargin:'200px'});
-    belowFold.forEach(function(el){io.observe(el);});
-  } else {
-    belowFold.forEach(function(){(adsbygoogle=window.adsbygoogle||[]).push({});});
-  }
-})();
-</script>
 <footer style="background:#1a1a2e;margin-top:48px;padding:28px 24px;text-align:center;font-family:'Segoe UI',system-ui,Arial,sans-serif;font-size:13px;color:#94a3b8;line-height:1.8">
 <div style="font-weight:700;color:#fff;font-size:15px">⚡ Tabutility</div>
 <div>Free, private, browser-based tools. No sign-up, no tracking.</div>
