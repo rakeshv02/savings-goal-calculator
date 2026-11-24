@@ -38,6 +38,7 @@
 nav .brand{color:#fff}
 nav a:hover{color:#818cf8}
 input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
+input[type="number"],select,button{min-height:44px;box-sizing:border-box}
 </style>
 <link rel="dns-prefetch" href="//unpkg.com">
 <script type="application/ld+json">
@@ -62,6 +63,7 @@ input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
     }
     </script>
       <meta name="robots" content="noindex, follow">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039091592734005" crossorigin="anonymous"></script>
 </head>
 <body>
   <nav class="site-nav"><span class="nav-brand">⚡ Tabutility</span><a href="https://tabutility.com">← All Tools</a></nav>
@@ -90,16 +92,22 @@ input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
         const current = parseFloat(currentSavings)||0;
         const r = parseFloat(annualReturn)||0;
         const y = parseFloat(years)||0;
+        if (![goal, current, r, y].every(Number.isFinite) || goal < 0 || current < 0 || r < 0 || y <= 0 || y > 100 || !Number.isInteger(y * 12)) {
+          alert('Enter non-negative savings and interest, and a term of 1–1,200 whole months (years × 12).');
+          return;
+        }
         const monthlyRate = r / 100 / 12;
         const n = y * 12;
         const fvFactor = Math.pow(1 + monthlyRate, n);
         const fvCurrent = current * fvFactor;
+        if (![fvFactor, fvCurrent].every(Number.isFinite)) { alert('These inputs produce an amount too large to calculate.'); return; }
         let requiredMonthly;
         if (monthlyRate === 0) requiredMonthly = (goal - fvCurrent) / n;
         else requiredMonthly = (goal - fvCurrent) * monthlyRate / (fvFactor - 1);
         requiredMonthly = Math.max(0, requiredMonthly);
         const totalContributions = current + requiredMonthly * n;
-        const totalInterest = goal - totalContributions;
+        const projectedBalance = fvCurrent + (monthlyRate === 0 ? requiredMonthly * n : requiredMonthly * (fvFactor - 1) / monthlyRate);
+        const totalInterest = projectedBalance - totalContributions;
         const scenarios = [1,2,3,4,5,6,7,8].map(rr => {
           const mr = rr / 100 / 12;
           const ff = Math.pow(1 + mr, n);
@@ -114,7 +122,7 @@ input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
           const fvC = monthlyRate > 0 ? requiredMonthly * (Math.pow(1 + monthlyRate, perds) - 1) / monthlyRate : requiredMonthly * perds;
           yearly.push({ year: yr, balance: fvL + fvC, target: goal });
         }
-        setResult({ goal, current, requiredMonthly, totalContributions, totalInterest, r, y, yearly, scenarios });
+        setResult({ goal, current, requiredMonthly, totalContributions, totalInterest, projectedBalance, r, y, yearly, scenarios });
       };
 
       const inputStyle = { width:"100%",padding:"4px",border:"2px solid #bbf7d0",borderRadius:10,fontSize:16,boxSizing:"border-box",outline:"none" };
@@ -157,7 +165,7 @@ input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
               <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(170px,1fr))",gap:16,marginBottom:24 }}>
                 {[
                   { label:"Required Monthly Saving", value:fmtDec(result.requiredMonthly,sym), color:"#059669", bg:"#f0fdf4" },
-                  { label:"Savings Goal", value:fmt(result.goal,sym), color:"#0d9488", bg:"#f0fdfa" },
+                  { label:"Projected Balance", value:fmt(result.projectedBalance,sym), color:"#0d9488", bg:"#f0fdfa" },
                   { label:"Total Contributions", value:fmt(result.totalContributions,sym), color:"#0369a1", bg:"#e0f2fe" },
                   { label:"Interest Earned", value:fmt(Math.max(0,result.totalInterest),sym), color:"#7c3aed", bg:"#faf5ff" },
                 ].map((item,i)=>(
@@ -173,7 +181,7 @@ input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
                   <table style={{ width:"100%",borderCollapse:"collapse",fontSize:13 }}>
                     <thead><tr style={{ background:"#f0fdf4" }}>{["Year","Projected Balance","% of Goal"].map(h=><th key={h} style={{ padding:"9px 12px",textAlign:"left",fontWeight:700 }}>{h}</th>)}</tr></thead>
                     <tbody>{result.yearly.map((row,i)=>{
-                      const p = Math.min(100,row.balance/row.target*100);
+                      const p = row.target > 0 ? Math.min(100,row.balance/row.target*100) : 100;
                       return (
                         <tr key={i} style={{ borderBottom:"1px solid #f1f3f5",background:i%2===0?"#fff":"#fafafa" }}>
                           <td style={{ padding:"8px 12px",fontWeight:600 }}>Year {row.year}</td>
@@ -277,7 +285,7 @@ input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
 </div>
 <footer style="background:#1a1a2e;margin-top:48px;padding:28px 24px;text-align:center;font-family:'Segoe UI',system-ui,Arial,sans-serif;font-size:13px;color:#94a3b8;line-height:1.8">
 <div style="font-weight:700;color:#fff;font-size:15px">⚡ Tabutility</div>
-<div>Free, private, browser-based tools. No sign-up, no tracking.</div>
+<div>Free, browser-based tools. No sign-up. Advertising and analytics are explained in our privacy policy.</div>
 <div style="margin-top:6px"><a href="https://tabutility.com" style="color:#818cf8;font-weight:600;text-decoration:none">All Tools</a> · <a href="https://tabutility.com/blog/" style="color:#94a3b8;text-decoration:none">Blog</a> · <a href="https://tabutility.com/about/" style="color:#94a3b8;text-decoration:none">About</a> · <a href="https://tabutility.com/privacy-policy/" style="color:#94a3b8;text-decoration:none">Privacy</a> · <a href="https://tabutility.com/contact/" style="color:#94a3b8;text-decoration:none">Contact</a></div>
 <div style="margin-top:6px;color:#64748b">© 2026 Tabutility</div>
 
@@ -293,9 +301,9 @@ input:focus,select:focus,textarea:focus{border-color:#818cf8!important}
         <p style="color:#94a3b8;margin:0 0 12px;">Saving £15,000 for a house deposit in 2 years, starting with £2,000, interest rate 4.5%:</p>
         <ul style="list-style:none;padding:0;margin:0;color:#cbd5e1;">
           <li style="padding:6px 0;border-bottom:1px solid #1e293b;">Amount still needed: <strong style="color:#f1f5f9;">£13,000</strong></li>
-          <li style="padding:6px 0;border-bottom:1px solid #1e293b;">Required monthly savings: <strong style="color:#34d399;">£523</strong></li>
-          <li style="padding:6px 0;border-bottom:1px solid #1e293b;">Interest earned over 2 years: <strong style="color:#34d399;">£417</strong></li>
-          <li style="padding:6px 0;">Total contributions needed: <strong style="color:#f1f5f9;">£12,552</strong></li>
+          <li style="padding:6px 0;border-bottom:1px solid #1e293b;">Required monthly savings: <strong style="color:#34d399;">£511.17</strong></li>
+          <li style="padding:6px 0;border-bottom:1px solid #1e293b;">Interest earned over 2 years: <strong style="color:#34d399;">£731.88</strong></li>
+          <li style="padding:6px 0;">Total contributions: <strong style="color:#f1f5f9;">£14,268.12 including the initial £2,000</strong></li>
         </ul>
       </div>
 
